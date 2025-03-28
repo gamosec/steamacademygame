@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحدي كلمات المرور: اختبر قوة كلمات مرورك</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* الأساسيات */
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #e0b0ff 0%, #c158dc 100%); /* خلفية بنفسجية فاتحة متناسقة */
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff; /* نص أبيض لتحسين التباين مع الخلفية البنفسجية */
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.9); /* خلفية بيضاء شفافة للعناصر */
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            color: #333; /* إعادة تعيين لون النص داخل الحاوية */
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* شاشة البدء */
+        .start-screen {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header img.logo { /* نمط لشعار الأكاديمية */
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            color: #9c27b0; /* بنفسجي متوسط */
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .header h1 i {
+            color: #e040fb; /* بنفسجي فاتح */
+            margin-left: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .main-img {
+            width: 200px;
+            height: auto;
+            margin: 20px auto;
+            border-radius: 10px;
+            border: 4px solid #9c27b0; /* بنفسجي متوسط */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin: 30px 0;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9c27b0; /* بنفسجي متوسط */
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Tajawal';
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #9c27b0; /* بنفسجي متوسط */
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.2); /* ظل بنفسجي */
+        }
+
+        button {
+            background: #9c27b0; /* بنفسجي متوسط */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: 'Tajawal';
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        button:hover {
+            background: #7b1fa2; /* بنفسجي أغمق */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* منطقة اللعبة */
+        .game-area {
+            padding: 20px;
+        }
+
+        .game-header {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .player-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(156, 39, 176, 0.1); /* بنفسجي فاتح */
+            padding: 10px 15px;
+            border-radius: 12px;
+        }
+
+        .score-box {
+            background: #9c27b0; /* بنفسجي متوسط */
+            color: white;
+            padding: 5px 15px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .time-box {
+            background: #e040fb; /* بنفسجي فاتح */
+            color: white;
+            padding: 5px 15px;
+            border-radius: 12px;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+
+        .progress-container {
+            width: 100%;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #9c27b0, #e040fb); /* تدرج بنفسجي */
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+
+        .progress-text {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            display: block;
+            text-align: left;
+        }
+
+        .scenario-container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #333; /* إعادة تعيين لون النص */
+        }
+
+        .scenario-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 200px;
+            margin: 20px auto;
+            border-radius: 10px;
+            border: 3px solid #9c27b0; /* بنفسجي متوسط */
+            display: block;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .option {
+            background: #9c27b0; /* بنفسجي متوسط */
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            text-align: right;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover {
+            background: #7b1fa2; /* بنفسجي أغمق */
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .feedback-area {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .feedback-area.correct {
+            background-color: rgba(76, 175, 80, 0.2); /* أخضر فاتح */
+            color: #4caf50; /* أخضر */
+        }
+
+        .feedback-area.incorrect {
+            background-color: rgba(244, 67, 54, 0.2); /* أحمر فاتح */
+            color: #f44336; /* أحمر */
+        }
+
+        /* شاشة النتائج */
+        .result-screen {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .final-score {
+            font-size: 2rem;
+            color: #4caf50; /* أخضر */
+            margin: 20px 0;
+        }
+
+        .final-time {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        #restartBtn {
+            background: #9c27b0; /* بنفسجي متوسط */
+        }
+
+        #showLeaderboardBtn {
+            background: #e040fb; /* بنفسجي فاتح */
+        }
+
+        #resetBtn {
+            background: #78909c; /* رمادي */
+        }
+
+        /* لوحة المتصدرين */
+        .leaderboard-screen {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .leaderboard-container {
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #333; /* إعادة تعيين لون النص */
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: rgba(156, 39, 176, 0.1); /* بنفسجي فاتح */
+            border-radius: 8px;
+            align-items: center;
+        }
+
+        .leaderboard-rank {
+            background: #9c27b0; /* بنفسجي متوسط */
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .leaderboard-name {
+            flex-grow: 1;
+            text-align: right;
+            padding: 0 15px;
+        }
+
+        .leaderboard-score {
+            background: #e040fb; /* بنفسجي فاتح */
+            color: white;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .leaderboard-date {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .leaderboard-time {
+            font-size: 0.8rem;
+            color: #7f8c8d;
+            margin-top: 2px;
+        }
+
+        #backToResultsBtn {
+            background: #9c27b0; /* بنفسجي متوسط */
+            margin-top: 20px;
+        }
+
+        .no-results {
+            padding: 20px;
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .warning-icon {
+            color: #f44336; /* أحمر */
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container animate__animated animate__fadeIn">
+        <div class="start-screen" id="startScreen">
+            <div class="header">
+                <img src="LO44.png" alt="شعار أكاديمية STEAM" class="logo">
+                <h1><i class="fas fa-key"></i> تحدي كلمات المرور</h1>
+                <p class="subtitle">اختبر معلوماتك حول قوة كلمات المرور وكيفية إنشائها</p>
+            </div>
+
+            <img src="https://cdn-icons-png.flaticon.com/512/565/565507.png" alt="رمز يمثل قفل وكلمة مرور" class="main-img animate__animated animate__pulse animate__infinite">
+
+            <div class="input-group">
+                <div class="input-container">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" placeholder="أدخل اسمك هنا">
+                </div>
+                <button id="startBtn" class="animate__animated animate__bounceIn">
+                    <i class="fas fa-play"></i> ابدأ التحدي
+                </button>
+            </div>
+        </div>
+
+        <div class="game-area hidden" id="gameArea">
+            <div class="game-header">
+                <div class="player-info">
+                    <span id="currentPlayerName"></span>
+                    <div>
+                        <span class="time-box">الوقت: <span id="currentTime">0</span> ث</span>
+                        <span class="score-box">النقاط: <span id="currentScore">0</span></span>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress" id="progress"></div>
+                    </div>
+                    <span class="progress-text">السؤال <span id="currentQuestion">1</span> من 10</span>
+                </div>
+            </div>
+
+            <div class="scenario-container animate__animated animate__fadeIn">
+                <h2 id="scenarioText"></h2>
+                <img id="scenarioImage" src="" alt="صورة توضيحية للسيناريو" class="scenario-img">
+            </div>
+
+            <div class="options" id="options"></div>
+            <div id="feedbackArea" class="feedback-area hidden"></div> </div>
+
+        <div class="result-screen hidden" id="resultScreen">
+            <h2><i class="fas fa-trophy"></i> تهانينا <span id="finalPlayerName"></span>!</h2>
+            <div class="final-score">نتيجتك: <span id="finalScore">0</span>/10</div>
+            <div class="final-time">الوقت المستغرق: <span id="finalTime">0</span> ثانية</div>
+            <img src="https://cdn-icons-png.flaticon.com/512/3132/3132779.png" alt="رمز يمثل الفوز" class="main-img">
+            <div class="buttons">
+                <button id="restartBtn">
+                    <i class="fas fa-redo"></i> حاول مرة أخرى
+                </button>
+                <button id="showLeaderboardBtn">
+                    <i class="fas fa-crown"></i> المتصدرون
+                </button>
+                <button id="resetBtn">
+                    <i class="fas fa-trash-alt"></i> مسح النتائج
+                </button>
+            </div>
+        </div>
+
+        <div class="leaderboard-screen hidden" id="leaderboardScreen">
+            <h2><i class="fas fa-crown"></i> لوحة المتصدرين</h2>
+            <div class="leaderboard-container" id="leaderboardContainer"></div>
+            <div class="buttons">
+                <button id="backToResultsBtn">
+                    <i class="fas fa-arrow-left"></i> العودة للنتائج
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // قاعدة بيانات اللاعبين
+        let players = JSON.parse(localStorage.getItem('passwordChallengePlayers')) || []; // تغيير اسم قاعدة البيانات
+
+        // بنك الأسئلة حول قوة كلمات المرور
+        const questionBank = [
+            {
+                question: "أي من كلمات المرور التالية تعتبر الأقوى؟",
+                options: ["123456", "password", "MyBirthday1990", "P@$$wOrd123!"],
+                correct: "P@$$wOrd123!",
+                explanation: "🔑 كلمة المرور القوية تحتوي على مزيج من الأحرف الكبيرة والصغيرة والأرقام والرموز.",
+                image: "https://cdn-icons-png.flaticon.com/512/565/565522.png"
+            },
+            {
+                question: "هل استخدام نفس كلمة المرور لجميع حساباتك على الإنترنت فكرة جيدة؟",
+                options: ["نعم، هذا يجعل تذكر كلمات المرور أسهل.", "لا، إذا تم اختراق أحد الحسابات، فستكون جميع الحسابات الأخرى في خطر.", "ربما، طالما أن كلمة المرور قوية."],
+                correct: "لا، إذا تم اختراق أحد الحسابات، فستكون جميع الحسابات الأخرى في خطر.",
+                explanation: "⚠️ استخدام كلمات مرور مختلفة لكل حساب يزيد من أمانك على الإنترنت.",
+                image: "https://cdn-icons-png.flaticon.com/512/3048/3048565.png"
+            },
+            {
+                question: "ما هي أفضل طريقة لإنشاء كلمة مرور قوية؟",
+                options: ["استخدام اسم حيوانك الأليف وتاريخ ميلادك.", "استخدام كلمة شائعة من القاموس مع إضافة بعض الأرقام.", "استخدام جملة لا تنسى مع استبدال بعض الأحرف بأرقام ورموز.", "استخدام كلمة مرور قصيرة وسهلة التذكر."],
+                correct: "استخدام جملة لا تنسى مع استبدال بعض الأحرف بأرقام ورموز.",
+                explanation: "💡 كلمات المرور الطويلة التي تحتوي على مزيج عشوائي من الأحرف والأرقام والرموز هي الأقوى.",
+                image: "https://cdn-icons-png.flaticon.com/512/565/565518.png"
+            },
+            {
+                question: "أي من كلمات المرور التالية تعتبر ضعيفة وسهلة التخمين؟",
+                options: ["SecurePass#1", "Summer2023!", "123456789", "ComplexPw@ss"],
+                correct: "123456789",
+                explanation: "🚫 كلمات المرور التي تتكون من أرقام متسلسلة أو أنماط بسيطة سهلة التخمين.",
+                image: "https://cdn-icons-png.flaticon.com/512/565/565524.png"
+            },
+            {
+                question: "ماذا يجب أن تفعل إذا شككت في أن شخصًا ما قد عرف كلمة المرور الخاصة بك؟",
+                options: ["لا أفعل شيئًا، ربما أنا مخطئ.", "أقوم بتغيير كلمة المرور فورًا إلى كلمة مرور جديدة وقوية.", "أتصل بصديقي وأسأله عما إذا كان قد حاول الدخول إلى حسابي."],
+                correct: "أقوم بتغيير كلمة المرور فورًا إلى كلمة مرور جديدة وقوية.",
+                explanation: "🚨 تغيير كلمة المرور بسرعة يحمي حسابك من الوصول غير المصرح به.",
+                image: "https://cdn-icons-png.flaticon.com/512/3048/3048607.png"
+            },
+            {
+                question: "هل من الآمن مشاركة كلمة المرور الخاصة بك مع صديق مقرب تثق به؟",
+                options: ["نعم، إذا كان صديقي موثوقًا.", "لا، يجب ألا تشارك كلمة المرور الخاصة بك مع أي شخص.", "فقط إذا كان لدي نفس كلمة المرور لحسابات أخرى."],
+                correct: "لا، يجب ألا تشارك كلمة المرور الخاصة بك مع أي شخص.",
+                explanation: "🔒 حافظ على سرية كلمات المرور الخاصة بك لحماية خصوصيتك وأمانك.",
+                image: "https://cdn-icons-png.flaticon.com/512/87/87188.png"
+            },
+            {
+                question: "ما هو طول كلمة المرور الموصى به لجعلها أكثر أمانًا؟",
+                options: ["أقل من 6 أحرف.", "من 6 إلى 8 أحرف.", "أكثر من 12 حرفًا.", "لا يهم الطول طالما أنها تحتوي على رموز."],
+                correct: "أكثر من 12 حرفًا.",
+                explanation: "📏 كلمات المرور الأطول أكثر صعوبة في اختراقها.",
+                image: "https://cdn-icons-png.flaticon.com/512/565/565520.png"
+            },
+            {
+                question: "هل استخدام معلومات شخصية مثل اسمك أو تاريخ ميلادك في كلمة المرور فكرة جيدة؟",
+                options: ["نعم، هذا يجعل تذكرها أسهل.", "لا، هذه المعلومات سهلة العثور عليها ويمكن تخمين كلمة المرور بسهولة.", "ربما، إذا قمت بخلطها مع بعض الرموز."],
+                correct: "لا، هذه المعلومات سهلة العثور عليها ويمكن تخمين كلمة المرور بسهولة.",
+                explanation: "🎂 تجنب استخدام المعلومات الشخصية في كلمات المرور الخاصة بك.",
+                image: "https://cdn-icons-png.flaticon.com/512/3462/3462308.png"
+            },
+            {
+                question: "ما هي 'التحقق بخطوتين' أو 'المصادقة الثنائية' وكيف تساعد في أمان كلمات المرور؟",
+                options: ["هي طريقة لإعادة تعيين كلمة المرور إذا نسيتها.", "هي إضافة طبقة أمان إضافية تتطلب رمزًا إضافيًا عند تسجيل الدخول.", "هي برنامج يقوم بتخمين كلمات المرور."],
+                correct: "هي إضافة طبقة أمان إضافية تتطلب رمزًا إضافيًا عند تسجيل الدخول.",
+                explanation: "🛡️ التحقق بخطوتين يجعل من الصعب على شخص آخر الوصول إلى حسابك حتى لو عرف كلمة المرور.",
+                image: "https://cdn-icons-png.flaticon.com/512/3048/3048630.png"
+            },
+            {
+                question: "أين يجب عليك تخزين كلمات المرور الخاصة بك بشكل آمن؟",
+                options: ["في ملف نصي على سطح المكتب.", "مكتوبة على ورقة بجانب جهاز الكمبيوتر الخاص بك.", "في مدير كلمات مرور موثوق به.", "في رسالة بريد إلكتروني مرسلة إلى نفسك."],
+                correct: "في مدير كلمات مرور موثوق به.",
+                explanation: "🗝️ مديرو كلمات المرور يساعدون في إنشاء وتخزين كلمات مرور قوية بشكل آمن.",
+                image: "https://cdn-icons-png.flaticon.com/512/3048/3048610.png"
+            }
+            // يمكنك إضافة المزيد من الأسئلة هنا
+        ];
+
+        // متغيرات اللعبة
+        let currentScenario = 0;
+        let score = 0;
+        let username = "";
+        let gameStartTime;
+        let totalTime = 0; // الوقت الكلي للعبة بالثواني
+        let gameTimer;
+        let selectedScenarios = []; // لتخزين الأسئلة المختارة عشوائيًا
+
+        // عناصر DOM
+        const startScreen = document.getElementById('startScreen');
+        const gameArea = document.getElementById('gameArea');
+        const resultScreen = document.getElementById('resultScreen');
+        const leaderboardScreen = document.getElementById('leaderboardScreen');
+        const leaderboardContainer = document.getElementById('leaderboardContainer');
+        const startBtn = document.getElementById('startBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const showLeaderboardBtn = document.getElementById('showLeaderboardBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const backToResultsBtn = document.getElementById('backToResultsBtn');
+
+        const currentPlayerName = document.getElementById('currentPlayerName');
+        const currentScore = document.getElementById('currentScore');
+        const currentTime = document.getElementById('currentTime');
+        const currentQuestion = document.getElementById('currentQuestion');
+        const scenarioText = document.getElementById('scenarioText');
+        const scenarioImage = document.getElementById('scenarioImage');
+        const optionsDiv = document.getElementById('options');
+        const progressBar = document.getElementById('progress');
+        const finalPlayerName = document.getElementById('finalPlayerName');
+        const finalScore = document.getElementById('finalScore');
+        const finalTime = document.getElementById('finalTime');
+        const feedbackArea = document.getElementById('feedbackArea'); // عنصر لعرض ملاحظات الإجابات
+
+        // بدء اللعبة
+        startBtn.addEventListener('click', startGame);
+        restartBtn.addEventListener('click', restartGame);
+        showLeaderboardBtn.addEventListener('click', showLeaderboard);
+        resetBtn.addEventListener('click', resetGame);
+        backToResultsBtn.addEventListener('click', backToResults);
+
+        function startGame() {
+            username = document.getElementById('username').value.trim();
+            if (username === "") {
+                alert("الرجاء إدخال اسمك!");
+                return;
+            }
+
+            // إعادة تعيين اللعبة
+            currentScenario = 0;
+            score = 0;
+            totalTime = 0;
+            currentScore.textContent = score;
+            currentTime.textContent = "0";
+            gameStartTime = new Date();
+            selectedScenarios = []; // إعادة تعيين الأسئلة المختارة
+
+            // اختيار 10 أسئلة عشوائية من بنك الأسئلة
+            shuffleArray(questionBank);
+            selectedScenarios = questionBank.slice(0, 10);
+
+            // تحديث عدد الأسئلة في شريط التقدم
+            const numberOfQuestions = selectedScenarios.length;
+            document.querySelector('.progress-text').textContent = `السؤال 1 من ${numberOfQuestions}`;
+            document.querySelector('.result-screen .final-score').textContent = `نتيجتك: 0/${numberOfQuestions}`;
+
+            // الانتقال إلى شاشة اللعبة
+            startScreen.classList.add('hidden');
+            gameArea.classList.remove('hidden');
+
+            // تعيين اسم اللاعب
+            currentPlayerName.textContent = username;
+
+            // بدء توقيت اللعبة
+            clearInterval(gameTimer);
+            gameTimer = setInterval(updateTimer, 1000);
+            displayScenario();
+        }
+
+        function updateTimer() {
+            const timeElapsed = Math.floor((new Date() - gameStartTime) / 1000);
+            currentTime.textContent = timeElapsed;
+            totalTime = timeElapsed; // تحديث الوقت الكلي
+        }
+
+        function displayScenario() {
+            if (currentScenario >= selectedScenarios.length) {
+                endGame();
+                return;
+            }
+
+            const scenario = selectedScenarios[currentScenario];
+            const numberOfQuestions = selectedScenarios.length;
+
+            // تحديث شريط التقدم
+            progressBar.style.width = `${((currentScenario + 1) / numberOfQuestions) * 100}%`;
+            currentQuestion.textContent = currentScenario + 1;
+            document.querySelector('.progress-text').textContent = `السؤال ${currentScenario + 1} من ${numberOfQuestions}`;
+
+            // تعيين السؤال والصورة
+            scenarioText.textContent = scenario.question;
+            scenarioImage.src = scenario.image;
+
+            // مسح الخيارات السابقة
+            optionsDiv.innerHTML = '';
+            feedbackArea.classList.add('hidden');
+
+            // الحصول على خيارات الإجابة وخلطها
+            const options = [...scenario.options];
+            shuffleArray(options);
+
+            // إضافة الخيارات الجديدة
+            options.forEach((option) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'option animate__animated animate__fadeInUp';
+                optionBtn.style.animationDelay = `${options.indexOf(option) * 0.2}s`; // استخدام الفهرس الحالي بعد الخلط
+                optionBtn.textContent = option;
+
+                optionBtn.addEventListener('click', () => {
+                    checkAnswer(option); // تمرير النص الفعلي للاختيار
+                });
+
+                optionsDiv.appendChild(optionBtn);
+            });
+        }
+
+        function checkAnswer(selectedAnswer) {
+            const scenario = selectedScenarios[currentScenario];
+
+            // إيقاف المؤقت مؤقتًا أثناء عرض الملاحظات
+            clearInterval(gameTimer);
+
+            if (selectedAnswer === scenario.correct) {
+                score++;
+                currentScore.textContent = score;
+                feedbackArea.className = 'feedback-area correct animate__animated animate__fadeIn';
+                feedbackArea.textContent = "✅ إجابة صحيحة!\n" + scenario.explanation;
+            } else {
+                feedbackArea.className = 'feedback-area incorrect animate__animated animate__fadeIn';
+                feedbackArea.textContent = "❌ إجابة خاطئة!\n" + scenario.explanation;
+            }
+            feedbackArea.classList.remove('hidden');
+
+            // الانتقال إلى السؤال التالي بعد فترة قصيرة
+            setTimeout(() => {
+                currentScenario++;
+                displayScenario();
+                // استئناف المؤقت
+                clearInterval(gameTimer);
+                gameTimer = setInterval(updateTimer, 1000);
+            }, 1500);
+        }
+
+        // دالة لخلط عناصر المصفوفة بشكل عشوائي (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function endGame() {
+            // إيقاف المؤقت النهائي
+            clearInterval(gameTimer);
+
+            const numberOfQuestions = selectedScenarios.length;
+
+            // حفظ النتيجة مع الوقت الكلي
+            players.push({
+                name: username,
+                score: score,
+                totalTime: totalTime, // حفظ الوقت الكلي بالثواني
+                date: new Date().toLocaleDateString('ar-EG'),
+                timestamp: new Date().getTime() // للفرز عند التساوي
+            });
+
+            // فرز اللاعبين حسب النقاط ثم الوقت
+            players.sort((a, b) => {
+                if (b.score !== a.score) {
+                    return b.score - a.score; // ترتيب تنازلي حسب النقاط
+                } else {
+                    return a.totalTime - b.totalTime; // ترتيب تصاعدي حسب الوقت عند التساوي
+                }
+            });
+
+            // حفظ فقط أفضل 50 نتيجة
+            if (players.length > 50) {
+                players = players.slice(0, 50);
+            }
+
+            localStorage.setItem('passwordChallengePlayers', JSON.stringify(players)); // استخدام اسم قاعدة البيانات الجديد
+
+            // عرض شاشة النتائج
+            finalPlayerName.textContent = username;
+            finalScore.textContent = `${score}/${numberOfQuestions}`;
+            finalTime.textContent = totalTime;
+
+            gameArea.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+        }
+
+        function showLeaderboard() {
+            resultScreen.classList.add('hidden');
+            leaderboardScreen.classList.remove('hidden');
+
+            // فرز اللاعبين حسب النقاط ثم الوقت
+            const sortedPlayers = [...players].sort((a, b) => {
+                if (b.score !== a.score) {
+                    return b.score - a.score;
+                } else {
+                    return a.totalTime - b.totalTime;
+                }
+            });
+
+            // عرض أفضل 10 لاعبين
+            leaderboardContainer.innerHTML = '';
+
+            if (sortedPlayers.length === 0) {
+                leaderboardContainer.innerHTML = '<p class="no-results">لا توجد نتائج مسجلة بعد</p>';
+                return;
+            }
+
+            const numberOfQuestions = selectedScenarios.length;
+
+            sortedPlayers.slice(0, 10).forEach((player, index) => {
+                const playerElement = document.createElement('div');
+                playerElement.className = 'leaderboard-item animate__animated animate__fadeIn';
+                playerElement.style.animationDelay = `${index * 0.1}s`;
+
+                playerElement.innerHTML = `
+                    <div class="leaderboard-rank">${index + 1}</div>
+                    <div class="leaderboard-name">${player.name}
+                        <div class="leaderboard-date">${player.date}</div>
+                        <div class="leaderboard-time">الوقت: ${player.totalTime} ثانية</div>
+                    </div>
+                    <div class="leaderboard-score">${player.score}/${numberOfQuestions}</div>
+                `;
+
+                leaderboardContainer.appendChild(playerElement);
+            });
+        }
+
+        function backToResults() {
+            leaderboardScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+        }
+
+        function restartGame() {
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+
+        function resetGame() {
+            if (confirm("هل أنت متأكد من مسح جميع النتائج المحفوظة؟")) {
+                players = [];
+                localStorage.setItem('passwordChallengePlayers', JSON.stringify(players)); // استخدام اسم قاعدة البيانات الجديد
+                alert("تم مسح جميع النتائج بنجاح!");
+
+                // إذا كنا في شاشة المتصدرين، نحدث العرض
+                if (!leaderboardScreen.classList.contains('hidden')) {
+                    showLeaderboard();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
